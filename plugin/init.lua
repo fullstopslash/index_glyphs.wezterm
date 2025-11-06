@@ -12,11 +12,10 @@ local glyph_count = #DEFAULT_INDEX_GLYPHS
 
 function M.get_index_glyph(tab_index)
 	local index = (tab_index or 0) + 1
-	
 	if index <= glyph_count then
 		return index_glyphs[index]
 	end
-	
+	-- Wrap around for indices beyond glyph count
 	return index_glyphs[((index - 1) % glyph_count) + 1]
 end
 

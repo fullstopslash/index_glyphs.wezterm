@@ -8,27 +8,26 @@ local DEFAULT_INDEX_GLYPHS = {
 }
 
 local index_glyphs = DEFAULT_INDEX_GLYPHS
+local glyph_count = #DEFAULT_INDEX_GLYPHS
+local fallback_glyph = wezterm.nerdfonts and wezterm.nerdfonts.dev_terminal or "?"
 
 function M.get_index_glyph(tab_index)
-	if tab_index == nil then
-		tab_index = 0
-	end
+	local index = (tab_index or 0) + 1
 	
-	local index = tab_index + 1
-	
-	if index > 0 and index <= #index_glyphs then
+	if index <= glyph_count then
 		return index_glyphs[index]
 	end
 	
-	local wrapped_index = ((index - 1) % #index_glyphs) + 1
-	return index_glyphs[wrapped_index] or (wezterm.nerdfonts and wezterm.nerdfonts.dev_terminal or "?")
+	return index_glyphs[((index - 1) % glyph_count) + 1] or fallback_glyph
 end
 
 function M.setup(config, options)
-	options = options or {}
-	
-	if options.index_glyphs and type(options.index_glyphs) == "table" and #options.index_glyphs > 0 then
-		index_glyphs = options.index_glyphs
+	if options and options.index_glyphs and type(options.index_glyphs) == "table" then
+		local count = #options.index_glyphs
+		if count > 0 then
+			index_glyphs = options.index_glyphs
+			glyph_count = count
+		end
 	end
 	
 	return config

@@ -10,7 +10,7 @@ local DEFAULT_INDEX_GLYPHS = {
 local index_glyphs = DEFAULT_INDEX_GLYPHS
 
 function M.get_index_glyph(tab_index)
-	if not tab_index and tab_index ~= 0 then
+	if tab_index == nil then
 		tab_index = 0
 	end
 	
@@ -21,11 +21,7 @@ function M.get_index_glyph(tab_index)
 	end
 	
 	local wrapped_index = ((index - 1) % #index_glyphs) + 1
-	if index_glyphs[wrapped_index] then
-		return index_glyphs[wrapped_index]
-	end
-	
-	return wezterm.nerdfonts and wezterm.nerdfonts.dev_terminal or "?"
+	return index_glyphs[wrapped_index] or (wezterm.nerdfonts and wezterm.nerdfonts.dev_terminal or "?")
 end
 
 function M.setup(config, options)

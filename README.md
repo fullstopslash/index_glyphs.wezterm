@@ -12,6 +12,32 @@ A WezTerm plugin that provides customizable index glyphs for tab numbering, maki
 
 ## Installation
 
+### Remote Plugin Installation (Recommended)
+
+Use WezTerm's built-in plugin system to load the plugin directly from GitHub:
+
+```lua
+local wezterm = require("wezterm")
+local config = wezterm.config_builder()
+
+-- Load plugin from GitHub (with error handling)
+local index_glyphs_ok, index_glyphs = pcall(function()
+	return wezterm.plugin.require('https://github.com/fullstopslash/index_glyphs.wezterm')
+end)
+
+if index_glyphs_ok and index_glyphs then
+	config = index_glyphs.setup(config)
+else
+	-- Fallback: Load local plugin if remote fails
+	index_glyphs = require('index_glyphs')
+	config = index_glyphs.setup(config)
+end
+
+return config
+```
+
+**Note:** The remote plugin requires an active internet connection. WezTerm will cache the plugin after the first successful load.
+
 ### Manual Installation
 
 1. Place `index_glyphs.wez.lua` in your WezTerm config directory:
@@ -33,8 +59,9 @@ A WezTerm plugin that provides customizable index glyphs for tab numbering, maki
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
--- Load plugin
-local index_glyphs = require('index_glyphs')
+-- Load plugin (remote or local)
+local index_glyphs = wezterm.plugin.require('https://github.com/fullstopslash/index_glyphs.wezterm')
+-- Or for local: local index_glyphs = require('index_glyphs')
 config = index_glyphs.setup(config)
 
 -- In your format-tab-title callback:

@@ -9,7 +9,6 @@ local DEFAULT_INDEX_GLYPHS = {
 
 local index_glyphs = DEFAULT_INDEX_GLYPHS
 local glyph_count = #DEFAULT_INDEX_GLYPHS
-local fallback_glyph = wezterm.nerdfonts and wezterm.nerdfonts.dev_terminal or "?"
 
 function M.get_index_glyph(tab_index)
 	local index = (tab_index or 0) + 1
@@ -18,7 +17,7 @@ function M.get_index_glyph(tab_index)
 		return index_glyphs[index]
 	end
 	
-	return index_glyphs[((index - 1) % glyph_count) + 1] or fallback_glyph
+	return index_glyphs[((index - 1) % glyph_count) + 1]
 end
 
 function M.setup(config, options)
